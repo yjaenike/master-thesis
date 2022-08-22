@@ -1,0 +1,5 @@
+# Ignore the node_modules direcory
+data
+
+# Ignore ipynb checkpoints in the git
+.ipynb_checkpoints/
