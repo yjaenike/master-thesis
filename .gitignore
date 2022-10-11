@@ -1,5 +1,10 @@
 # Ignore the node_modules direcory
-data
+datenbank_werte_df.parquet
+Datenbank_Werte.csv
+pat_id_data.csv
+uke_clean.parquet
+uke_data_wide.parquet
 
+data_traffic
 # Ignore ipynb checkpoints in the git
 .ipynb_checkpoints/
