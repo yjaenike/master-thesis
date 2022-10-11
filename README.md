@@ -1,3 +1,5 @@
+# <div align="center"> Dataugmentaion for Transformer based Multivariate Time Series Forcasting </div>
+
 In my thesis I want to investigate the effectiveness of different manifold manipulation techniques on the performance of transformer based time series forecasting methods. Transformer models can work with time series , however, those sequence-to-sequence models rely on neural attention between timesteps, which allows for temporal learning but fails to consider distinct spatial relationships between variables inside the timestep. To solve this problem, Jeng et al. (2022) have introduced a new embedding methodology (Spacetimeformer) to capture the spatiotemporal relationship between variables. 
 As part of my thesis, I want to compare 4 different models: 
 
