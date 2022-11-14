@@ -17,7 +17,7 @@
 
 #dropout : 0.1
 #embs_share_weight : True
-#prj_share_weight : True
+#proj_share_weight : True
 #scale_emb_or_prj : 'prj'
 
 #output_dir : "./output"

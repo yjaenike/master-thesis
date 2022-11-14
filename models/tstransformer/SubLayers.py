@@ -1,6 +1,7 @@
 """ Implements the sublayers of the encoder decoder layers """
 
 import numpy as np
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 #from transformer.Modules import ScaledDotProductAttention
