@@ -1,0 +1,28 @@
+train_path : "/home/yannic/master-thesis/data_air/prsa_data.parquet"
+val_path : "/home/yannic/master-thesis/data_air/prsa_data.parquet"
+
+epoch : 10
+batch_size : 32
+
+d_model : 512
+d_inner_hidden : 2048
+d_key : 64
+d_value: 64
+
+n_head : 8
+n_klayers : 6
+n_warmup_steps : 4000
+lr_mul : 2.0
+seed : No
+
+dropout : 0.1
+embs_share_weight : True
+prj_share_weight : True
+scale_emb_or_prj : 'prj'
+
+output_dir : "./output"
+use_tb: True #TODO: Currently uses tensorboard, switch to W&B
+save_mode : 'best'
+
+cuda : True
+label_smoothing : True
