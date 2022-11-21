@@ -17,8 +17,8 @@ lr_mul : 2.0
 seed : No
 
 dropout : 0.1
-embs_share_weight : True
-proj_share_weight : True
+embs_share_weight : False
+proj_share_weight : False
 scale_emb_or_prj : 'prj'
 
 output_dir : "./output"

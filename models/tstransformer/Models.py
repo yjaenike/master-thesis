@@ -6,7 +6,7 @@ from tstransformer.Layers import EncoderLayer, DecoderLayer
 
 
 def get_pad_mask(seq, pad_idx):
-    """ Rezurns a padded sequence mask"""
+    """ Returns a padded sequence mask"""
     return (seq != pad_idx).unsqueeze(-2)
 
 def get_subsequent_mask(seq):
@@ -94,8 +94,10 @@ class Encoder(nn.Module):
         scale_emb (Boolean): If true, the enc_output is scaled with the sqrt of the model dimensioanlity
         """
         super().__init__()
-
-        self.src_sequence_emb = nn.Embedding(num_embeddings=n_src_sequence, embedding_dim=d_sequence_vec, padding_idx=pad_idx)
+        
+        self.linear_emb = nn.Linear(in_features=27, out_features=512)
+        
+        
         self.position_enc = PositionalEncoding(d_sequence_vec, n_position=n_position)
         self.dropout = nn.Dropout(p=dropout)
         
@@ -122,7 +124,8 @@ class Encoder(nn.Module):
 
         # -- Forward
         # Create input embedding
-        enc_output = self.src_sequence_emb(src_seq)
+        enc_output = self.linear_emb(src_seq)
+        
         if self.scale_emb:
             enc_output *= self.d_model ** 0.5
         
@@ -176,7 +179,8 @@ class Decoder(nn.Module):
         """
         super().__init__()
 
-        self.trg_sequence_emb = nn.Embedding(n_trg_sequence, d_sequence_vec, padding_idx=pad_idx)
+        self.linear_emb = nn.Linear(in_features=27, out_features=512)
+        
         self.position_enc = PositionalEncoding(d_sequence_vec, n_position=n_position)
         self.dropout = nn.Dropout(p=dropout)
         
@@ -204,7 +208,7 @@ class Decoder(nn.Module):
         dec_slf_attn_list, dec_enc_attn_list = [], []
 
         # -- Forward
-        dec_output = self.trg_sequence_emb(trg_seq)
+        dec_output = self.linear_emb(trg_seq)
         if self.scale_emb:
             dec_output *= self.d_model ** 0.5
         dec_output = self.dropout(self.position_enc(dec_output))
@@ -312,10 +316,10 @@ class Transformer(nn.Module):
 
         if trg_emb_prj_weight_sharing:
             # Share the weight between target sequence embedding & last dense layer
-            self.trg_sequence_prj.weight = self.decoder.trg_sequence_emb.weight
-
+            self.trg_sequence_prj.weight = self.decoder.linear_emb.weight
+        
         if emb_src_trg_weight_sharing:
-            self.encoder.src_sequence_emb.weight = self.decoder.trg_sequence_emb.weight
+            self.encoder.linear_emb.weight = self.decoder.linear_emb.weight
 
 
     def forward(self, src_seq, trg_seq):
@@ -332,7 +336,10 @@ class Transformer(nn.Module):
 
         enc_output, *_ = self.encoder(src_seq, src_mask)
         dec_output, *_ = self.decoder(trg_seq, trg_mask, enc_output, src_mask)
+        
         seq_logit = self.trg_sequence_prj(dec_output)
+        
+        
         if self.scale_prj:
             seq_logit *= self.d_model ** -0.5
         
