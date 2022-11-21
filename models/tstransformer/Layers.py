@@ -42,8 +42,6 @@ class EncoderLayer(nn.Module):
         :return: enc_slf_attn():The Attention map from the MultiheadAttentionModule
         """
         
-        # TODO: Maybe this shoudl be **self.slf_attn.forward(enc_input, enc_input, enc_input, mask=slf_attn_mask)**
-        # But maybe it is unneccessary since it's a torch nn.Module. So I need to test it out.
         enc_output, enc_slf_attn = self.slf_attn(enc_input, enc_input, enc_input, mask=slf_attn_mask)
         enc_output = self.pos_ffn(enc_output)
         return enc_output, enc_slf_attn

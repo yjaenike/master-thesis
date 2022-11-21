@@ -22,7 +22,8 @@ proj_share_weight : True
 scale_emb_or_prj : 'prj'
 
 output_dir : "./output"
-use_tb: True #TODO: Currently uses tensorboard, switch to W&B
+use_tb: True
+use_wandb: False
 save_mode : 'best'
 
 cuda : True

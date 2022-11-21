@@ -80,7 +80,7 @@ class Encoder(nn.Module):
     def __init__(self, n_src_sequence, d_sequence_vec, n_layers, n_head, d_k, d_v,
                  d_model, d_inner, pad_idx, dropout=0.1, n_position=200, scale_emb=False):
         """
-        n_src_sequence (int): size of the dictionary of the embedding
+        n_src_sequence (int): size of the dictionary of embeddings
         d_sequence_vec (int): the size of each embedding vector
         n_layers (int): the number of encoder layers 
         n_head (int): the number of attention heads
@@ -95,7 +95,7 @@ class Encoder(nn.Module):
         """
         super().__init__()
 
-        self.src_sequence_emb = nn.Embedding(n_src_sequence, d_sequence_vec, padding_idx=pad_idx)
+        self.src_sequence_emb = nn.Embedding(num_embeddings=n_src_sequence, embedding_dim=d_sequence_vec, padding_idx=pad_idx)
         self.position_enc = PositionalEncoding(d_sequence_vec, n_position=n_position)
         self.dropout = nn.Dropout(p=dropout)
         
