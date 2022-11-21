@@ -95,7 +95,7 @@ class Encoder(nn.Module):
         """
         super().__init__()
         
-        self.linear_emb = nn.Linear(in_features=27, out_features=512)
+        self.linear_emb = nn.Linear(in_features=n_src_sequence, out_features=d_model)
         
         
         self.position_enc = PositionalEncoding(d_sequence_vec, n_position=n_position)
@@ -179,7 +179,7 @@ class Decoder(nn.Module):
         """
         super().__init__()
 
-        self.linear_emb = nn.Linear(in_features=27, out_features=512)
+        self.linear_emb = nn.Linear(in_features=n_trg_sequence, out_features=d_model)
         
         self.position_enc = PositionalEncoding(d_sequence_vec, n_position=n_position)
         self.dropout = nn.Dropout(p=dropout)
