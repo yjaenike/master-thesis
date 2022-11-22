@@ -2,6 +2,7 @@
 import torch
 import torch.nn as nn
 import numpy as np
+import math
 from tstransformer.Layers import EncoderLayer, DecoderLayer
 
 
@@ -17,47 +18,41 @@ def get_subsequent_mask(seq):
     return subsequent_mask
 
 class PositionalEncoding(nn.Module):
-    """Positional Encoding of the input sequence
+    """ Positional Encoding Implementation
+    From : https://pytorch.org/tutorials/beginner/transformer_tutorial.html
     
     Atributes
     ---------
-    register_buffer (register_buffer): https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module.register_buffer
     pos_table (torch.Tensor): The sinusoidal encoding table
+        [register_buffer (register_buffer): https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module.register_buffer]
     
-    Methods
-    -------
-    _get_sinusoid_encoding_table(self, n_position, d_hid): Creates a sinusoidal encoding table 
+    Methods:
+    --------
     forward(self, x): Adds the positional encoding to the input vector x
     
     """
 
-    def __init__(self, d_hid, n_position=200):
+    def __init__(self, d_hid, n_position: 200):
         """
         d_hid (int): Inner dimensionality 
         n_position (int): Outer dimenisonality
         """
-        super(PositionalEncoding, self).__init__()
+        super().__init__()
 
-        # Not a parameter, but part of the module’s state
-        self.register_buffer('pos_table', self._get_sinusoid_encoding_table(n_position, d_hid))
-
-    def _get_sinusoid_encoding_table(self, n_position, d_hid):
-        """ Sinusoid position encoding table """
-        # TODO: make it with torch instead of numpy
-
-        def get_position_angle_vec(position):
-            return [position / np.power(10000, 2 * (hid_j // 2) / d_hid) for hid_j in range(d_hid)]
-
-        sinusoid_table = np.array([get_position_angle_vec(pos_i) for pos_i in range(n_position)])
-        sinusoid_table[:, 0::2] = np.sin(sinusoid_table[:, 0::2])  # dim 2i
-        sinusoid_table[:, 1::2] = np.cos(sinusoid_table[:, 1::2])  # dim 2i+1
-
-        return torch.FloatTensor(sinusoid_table).unsqueeze(0)
+        position = torch.arange(n_position).unsqueeze(1)
+        div_term = torch.exp(torch.arange(0, d_hid, 2) * (-math.log(10000.0) / d_hid))
+        pos_table = torch.zeros(n_position, 1, d_hid)
+        pos_table[:, 0, 0::2] = torch.sin(position * div_term)
+        pos_table[:, 0, 1::2] = torch.cos(position * div_term)
+        self.register_buffer('pos_table', pos_table)
 
     def forward(self, x):
-        """ Adds the positional encoding to the input vector x """
-        return x + self.pos_table[:, :x.size(1)].clone().detach()
-    
+        """
+        Args:
+            x: Tensor, shape [seq_len, batch_size, embedding_dim]
+        """
+        x = x + self.pos_table[:x.size(0)]
+        return x
     
 class Encoder(nn.Module):
     """The encoder part of the transformer model
@@ -333,9 +328,17 @@ class Transformer(nn.Module):
 
         src_mask = get_pad_mask(src_seq, self.src_pad_idx)
         trg_mask = get_pad_mask(trg_seq, self.trg_pad_idx) & get_subsequent_mask(trg_seq)
-
+        
+        
         enc_output, *_ = self.encoder(src_seq, src_mask)
+        
+        print("Encoder Output: ",enc_output.shape)
+        
         dec_output, *_ = self.decoder(trg_seq, trg_mask, enc_output, src_mask)
+        
+        
+        print("Decoder Output: ",dec_output.shape)
+        
         
         seq_logit = self.trg_sequence_prj(dec_output)
         
