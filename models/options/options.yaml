@@ -2,7 +2,7 @@ train_path : "/home/yannic/master-thesis/data_air/prsa_data.parquet"
 val_path : "/home/yannic/master-thesis/data_air/prsa_data.parquet"
 
 epoch : 10
-batch_size : 32
+batch_size : 64
 
 d_model : 512 # The Model dimensionality
 d_inner_hidden : 2048 # Dimensionality of the hidden layer in the Positionwise Feed Forward Module
@@ -11,7 +11,7 @@ d_value: 512 # dimensionality of the value vector
 d_sequence: 512  #dimensionality of the sequence vector after the 'Embedding' (fcn)
 
 n_head : 8 # Number of attention heads
-n_layers : 1 # the number of layers in the encoder / decoder -> 6 is the standard
+n_layers : 6 # the number of layers in the encoder / decoder -> 6 is the standard
 n_warmup_steps : 4000
 lr_mul : 2.0 # The learning rate of the network
 seed : No

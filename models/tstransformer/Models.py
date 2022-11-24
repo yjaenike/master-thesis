@@ -297,6 +297,7 @@ class Transformer(nn.Module):
         scale_emb = (scale_emb_or_prj == 'emb') if trg_emb_prj_weight_sharing else False
         self.scale_prj = (scale_emb_or_prj == 'prj') if trg_emb_prj_weight_sharing else False
         self.d_model = d_model
+        self.n_trg_sequence = n_trg_sequence
 
         self.encoder = Encoder(
             n_src_sequence=n_src_sequence, 
@@ -327,7 +328,7 @@ class Transformer(nn.Module):
             scale_emb=scale_emb)
 
         self.trg_sequence_prj = nn.Linear(d_model, n_trg_sequence, bias=False)
-
+        
         for p in self.parameters():
             if p.dim() > 1:
                 nn.init.xavier_uniform_(p) 
@@ -353,24 +354,18 @@ class Transformer(nn.Module):
         :return: pred_seq (torch.Tensor) the predicted sequence
         """
 
+        # Create masks
         src_mask = get_pad_mask(src_seq, self.src_pad_idx)
-        
         trg_seq_pad_mask = get_pad_mask(trg_seq, self.trg_pad_idx)
-        trg_seq_lookahead_mask = get_lookahead_mask(trg_seq.shape[2] , trg_seq.device)
-        
+        trg_seq_lookahead_mask = get_lookahead_mask(self.n_trg_sequence , trg_seq.device)
         trg_mask = trg_seq_pad_mask & trg_seq_lookahead_mask 
         
+        # Forward poss through the encoder and decoder
         enc_output, *_ = self.encoder(src_seq, src_mask)
-        
-        print("Encoder Output: ",enc_output.shape)
-        
         dec_output, *_ = self.decoder(trg_seq, trg_mask, enc_output, src_mask)
-        
-        print("Decoder Output: ",dec_output.shape)
         
         
         seq_logit = self.trg_sequence_prj(dec_output)
-        
         
         if self.scale_prj:
             seq_logit *= self.d_model ** -0.5
