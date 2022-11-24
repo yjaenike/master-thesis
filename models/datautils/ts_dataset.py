@@ -22,6 +22,7 @@ class TSDataset(Dataset):
         # If the target cols are not specified, use all columns as targets
         if self.target_cols is None:
             self.target_cols = self.data.shape[1]
+        #y = self.data[index+self.window, -self.target_cols:]
         y = torch.unsqueeze(self.data[index+self.window, -self.target_cols:], dim=0)
         return x, y
     
