@@ -10,12 +10,14 @@ def get_pad_mask(seq, pad_idx):
     """ Returns a padded sequence mask"""
     return (seq != pad_idx).unsqueeze(-2)
 
-def get_subsequent_mask(seq):
+def get_lookahead_mask(seq_size, device):
     """ For masking out the subsequent info. """
-    sz_b, len_s = seq.size()
     subsequent_mask = (1 - torch.triu(
-        torch.ones((1, len_s, len_s), device=seq.device), diagonal=1)).bool()
+        torch.ones((1, seq_size, seq_size), device=device), diagonal=1)).bool()
+    
     return subsequent_mask
+
+
 
 class PositionalEncoding(nn.Module):
     """ Positional Encoding Implementation
@@ -209,11 +211,7 @@ class Decoder(nn.Module):
         if self.scale_emb:
             dec_output *= self.d_model ** 0.5
         
-        
         dec_output = self.dropout(self.position_enc(dec_output))
-        
-        #print(dec_output.shape)
-        
         dec_output = self.layer_norm(dec_output)
 
         
@@ -282,7 +280,8 @@ class Transformer(nn.Module):
         """
         super().__init__()
 
-        self.src_pad_idx, self.trg_pad_idx = src_pad_idx, trg_pad_idx
+        self.src_pad_idx = src_pad_idx
+        self.trg_pad_idx = trg_pad_idx
 
         # In section 3.4 of paper "Attention Is All You Need", there is such detail:
         # "In our model, we share the same weight matrix between the two
@@ -300,16 +299,32 @@ class Transformer(nn.Module):
         self.d_model = d_model
 
         self.encoder = Encoder(
-            n_src_sequence=n_src_sequence, n_position=n_position,
-            d_sequence_vec=d_sequence_vec, d_model=d_model, d_inner=d_inner,
-            n_layers=n_layers, n_head=n_head, d_k=d_k, d_v=d_v,
-            pad_idx=src_pad_idx, dropout=dropout, scale_emb=scale_emb)
+            n_src_sequence=n_src_sequence, 
+            n_position=n_position,
+            d_sequence_vec=d_sequence_vec, 
+            d_model=d_model, 
+            d_inner=d_inner,
+            n_layers=n_layers, 
+            n_head=n_head, 
+            d_k=d_k, 
+            d_v=d_v,
+            pad_idx=src_pad_idx, 
+            dropout=dropout, 
+            scale_emb=scale_emb)
 
         self.decoder = Decoder(
-            n_trg_sequence=n_trg_sequence, n_position=n_position,
-            d_sequence_vec=d_sequence_vec, d_model=d_model, d_inner=d_inner,
-            n_layers=n_layers, n_head=n_head, d_k=d_k, d_v=d_v,
-            pad_idx=trg_pad_idx, dropout=dropout, scale_emb=scale_emb)
+            n_trg_sequence=n_trg_sequence, 
+            n_position=n_position,
+            d_sequence_vec=d_sequence_vec, 
+            d_model=d_model, 
+            d_inner=d_inner,
+            n_layers=n_layers,
+            n_head=n_head, 
+            d_k=d_k, 
+            d_v=d_v,
+            pad_idx=trg_pad_idx, 
+            dropout=dropout, 
+            scale_emb=scale_emb)
 
         self.trg_sequence_prj = nn.Linear(d_model, n_trg_sequence, bias=False)
 
@@ -339,15 +354,17 @@ class Transformer(nn.Module):
         """
 
         src_mask = get_pad_mask(src_seq, self.src_pad_idx)
-        trg_mask = get_pad_mask(trg_seq, self.trg_pad_idx) & get_subsequent_mask(trg_seq)
         
+        trg_seq_pad_mask = get_pad_mask(trg_seq, self.trg_pad_idx)
+        trg_seq_lookahead_mask = get_lookahead_mask(trg_seq.shape[2] , trg_seq.device)
+        
+        trg_mask = trg_seq_pad_mask & trg_seq_lookahead_mask 
         
         enc_output, *_ = self.encoder(src_seq, src_mask)
         
         print("Encoder Output: ",enc_output.shape)
         
         dec_output, *_ = self.decoder(trg_seq, trg_mask, enc_output, src_mask)
-        
         
         print("Decoder Output: ",dec_output.shape)
         

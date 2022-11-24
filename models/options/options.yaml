@@ -6,8 +6,8 @@ batch_size : 32
 
 d_model : 512 # The Model dimensionality
 d_inner_hidden : 2048 # Dimensionality of the hidden layer in the Positionwise Feed Forward Module
-d_key : 64 # dimensionality of the key vector
-d_value: 64 # dimensionality of the value vector
+d_key : 512 # dimensionality of the key vector
+d_value: 512 # dimensionality of the value vector
 d_sequence: 512  #dimensionality of the sequence vector after the 'Embedding' (fcn)
 
 n_head : 8 # Number of attention heads
