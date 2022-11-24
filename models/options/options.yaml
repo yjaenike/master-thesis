@@ -2,7 +2,7 @@ train_path : "/home/yannic/master-thesis/data_air/prsa_data.parquet"
 val_path : "/home/yannic/master-thesis/data_air/prsa_data.parquet"
 
 epoch : 10
-batch_size : 64
+batch_size : 32
 
 d_model : 512 # The Model dimensionality
 d_inner_hidden : 2048 # Dimensionality of the hidden layer in the Positionwise Feed Forward Module
@@ -22,7 +22,7 @@ proj_share_weight : False
 scale_emb_or_prj : 'prj'
 
 output_dir : "./output"
-use_tb: True
+use_tb: False
 use_wandb: False
 save_mode : 'best'
 

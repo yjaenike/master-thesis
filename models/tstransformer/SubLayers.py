@@ -76,6 +76,8 @@ class MultiHeadAttention(nn.Module):
         len_k = k.size(1)
         len_v = v.size(1)
         
+
+        
         residual = q
         
         # Pass through the pre-attention projection: b x lq x (n*dv)
@@ -84,21 +86,29 @@ class MultiHeadAttention(nn.Module):
         k = self.w_ks(k).view(sz_b, len_k, n_head, d_k)
         v = self.w_vs(v).view(sz_b, len_v, n_head, d_v)
         
+        
+        
         # Transpose for attention dot product: b x n x lq x dv
         q = q.transpose(1, 2)
         k = k.transpose(1, 2)
         v = v.transpose(1, 2)
         
+        
+        
         if mask is not None:
             mask = mask.unsqueeze(1) # For head axis broadcasting
-            
+        
+        
         q, attn = self.attention(q, k, v, mask=mask)
+        
+        
         
         # Transpose to move the head dimension back: b x lq x n x dv
         # Combine the last two dimensions to concatenate all the heads together: b x lq x (n*dv)
         q = q.transpose(1, 2).contiguous().view(sz_b, len_q, -1)
         q = self.dropout(self.fc(q))
         q += residual
+        
 
         q = self.layer_norm(q)
 
@@ -185,13 +195,16 @@ class ScaledDotProductAttention(nn.Module):
         :param: k (torch.Tensor): Key Matrix
         :param: v (torch.Tensor): Value Matrix
         :param: mask (BoolTensor): Boolean Tensor describing which elements should be masked
-        :return: ouput (torch.Tensor): The Attention Matrix applied(multiplied) with the value matrix. I.e. The Scaled dot-product Attention Matrix 
+        :return: output (torch.Tensor): The Attention Matrix applied(multiplied) with the value matrix. I.e. The Scaled dot-product Attention Matrix 
         :return: attn (torch.Tensor): The attention matrix  
         """
-
+        
+        
         attn = torch.matmul(q / self.temperature, k.transpose(2, 3))
         
+        
         if mask is not None:
+            #TODO: mask is not working properly
             #attn = attn.masked_fill(mask == 0, -1e9)
             pass
 

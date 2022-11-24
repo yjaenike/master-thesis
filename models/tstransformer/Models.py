@@ -125,7 +125,7 @@ class Encoder(nn.Module):
             enc_output *= self.d_model ** 0.5
         
         # Add position encoding
-        enc_output = self.dropout(self.position_enc(enc_output))
+        enc_output = self.dropout(self.position_enc(enc_output))       
         enc_output = self.layer_norm(enc_output)
         
         # Run through encoder layers
@@ -173,9 +173,8 @@ class Decoder(nn.Module):
         scale_emb (Boolean): If true, the enc_output is scaled with the sqrt of the model dimensioanlity
         """
         super().__init__()
-
-        self.linear_emb = nn.Linear(in_features=n_trg_sequence, out_features=d_model)
         
+        self.linear_emb = nn.Linear(in_features=n_trg_sequence, out_features=d_model)
         self.position_enc = PositionalEncoding(d_sequence_vec, n_position=n_position)
         self.dropout = nn.Dropout(p=dropout)
         
@@ -203,20 +202,33 @@ class Decoder(nn.Module):
         dec_slf_attn_list, dec_enc_attn_list = [], []
 
         # -- Forward
+        
         dec_output = self.linear_emb(trg_seq)
+        
+        
         if self.scale_emb:
             dec_output *= self.d_model ** 0.5
+        
+        
         dec_output = self.dropout(self.position_enc(dec_output))
+        
+        #print(dec_output.shape)
+        
         dec_output = self.layer_norm(dec_output)
 
+        
         for dec_layer in self.layer_stack:
+            
             dec_output, dec_slf_attn, dec_enc_attn = dec_layer(
                 dec_output, enc_output, slf_attn_mask=trg_mask, dec_enc_attn_mask=src_mask)
+            
             dec_slf_attn_list += [dec_slf_attn] if return_attns else []
             dec_enc_attn_list += [dec_enc_attn] if return_attns else []
 
+            
         if return_attns:
             return dec_output, dec_slf_attn_list, dec_enc_attn_list
+        
         return dec_output,
     
 
