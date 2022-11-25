@@ -180,9 +180,11 @@ class Decoder(nn.Module):
         self.position_enc = PositionalEncoding(d_sequence_vec, n_position=n_position)
         self.dropout = nn.Dropout(p=dropout)
         
+        #TODO: change custom decoder layer to torch implementation
         self.layer_stack = nn.ModuleList([
-            DecoderLayer(d_model, d_inner, n_head, d_k, d_v, dropout=dropout)
-            for _ in range(n_layers)])
+            nn.TransformerDecoderLayer(d_model=512, nhead=8, dim_feedforward=d_inner, batch_first=True)
+            for _ in range(n_layers)
+        ])
         
         self.layer_norm = nn.LayerNorm(d_model, eps=1e-6)
         self.scale_emb = scale_emb
@@ -205,6 +207,7 @@ class Decoder(nn.Module):
 
         # -- Forward
         
+        # set the dec_output to the target sequence so the first input to the first layer is the start "token" 
         dec_output = self.linear_emb(trg_seq)
         
         
@@ -215,12 +218,10 @@ class Decoder(nn.Module):
         dec_output = self.layer_norm(dec_output)
 
         
+        #TODO: implement nn.DecoderLayer forward pass
         for dec_layer in self.layer_stack:
             
-            dec_output, dec_slf_attn, dec_enc_attn = dec_layer(dec_output, enc_output, slf_attn_mask=trg_mask, dec_enc_attn_mask=src_mask)
-            
-            dec_slf_attn_list += [dec_slf_attn] if return_attns else []
-            dec_enc_attn_list += [dec_enc_attn] if return_attns else []
+            dec_output = dec_layer(dec_output, enc_output,)# trg_mask, src_mask)
 
             
         if return_attns:

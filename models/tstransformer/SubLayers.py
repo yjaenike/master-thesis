@@ -4,8 +4,54 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-#from transformer.Modules import ScaledDotProductAttention
 
+class PositionwiseFeedForward(nn.Module):
+    """A two-feed-forward-layer module
+    
+    Position-Wise Feed-Forward Layer is a type of feedforward layer consisting of two 
+    dense layers that applies to the last dimension, which means the same dense layers 
+    are used for each position item in the sequence, so called position-wise.
+
+    Attributes
+    ----------
+    w_1 (nn.Linear): First linear layers
+    w_2 (nn.Linear): Second linear layers
+    layer_norm (nn.LayerNorm): Normalisation layer
+    dropout (nn.Dropout): Dropout layer
+    
+    Methods
+    -------
+    forward(self, x): Performs one step forward through the Module
+    """
+
+    def __init__(self, d_in, d_hid, dropout=0.1):
+        """
+        d_in (int): Input dimensionality
+        d_out (int): Output dimensionality
+        dropout (float): Dropout rate
+        """
+        super().__init__()
+        
+        self.w_1 = nn.Linear(d_in, d_hid) # position-wise
+        self.w_2 = nn.Linear(d_hid, d_in) # position-wise
+        self.layer_norm = nn.LayerNorm(d_in, eps=1e-6)
+        self.dropout = nn.Dropout(dropout)
+
+    def forward(self, x):
+        """  Performs one step forward through the Module
+        :param: x (torch.Tensor): Input Vector
+        :return: x (torch.Tensor): Ouput Vecotr after running throught layers of this module
+        """
+
+        residual = x
+
+        x = self.w_2(F.relu(self.w_1(x)))
+        x = self.dropout(x)
+        x += residual
+
+        x = self.layer_norm(x)
+
+        return x
 
 class MultiHeadAttention(nn.Module):
     """Multi-Head Attention module
@@ -114,56 +160,6 @@ class MultiHeadAttention(nn.Module):
 
         return q, attn
 
-    
-class PositionwiseFeedForward(nn.Module):
-    """A two-feed-forward-layer module
-    
-    Position-Wise Feed-Forward Layer is a type of feedforward layer consisting of two 
-    dense layers that applies to the last dimension, which means the same dense layers 
-    are used for each position item in the sequence, so called position-wise.
-
-    Attributes
-    ----------
-    w_1 (nn.Linear): First linear layers
-    w_2 (nn.Linear): Second linear layers
-    layer_norm (nn.LayerNorm): Normalisation layer
-    dropout (nn.Dropout): Dropout layer
-    
-    Methods
-    -------
-    forward(self, x): Performs one step forward through the Module
-    """
-
-    def __init__(self, d_in, d_hid, dropout=0.1):
-        """
-        d_in (int): Input dimensionality
-        d_out (int): Output dimensionality
-        dropout (float): Dropout rate
-        """
-        super().__init__()
-        
-        self.w_1 = nn.Linear(d_in, d_hid) # position-wise
-        self.w_2 = nn.Linear(d_hid, d_in) # position-wise
-        self.layer_norm = nn.LayerNorm(d_in, eps=1e-6)
-        self.dropout = nn.Dropout(dropout)
-
-    def forward(self, x):
-        """  Performs one step forward through the Module
-        :param: x (torch.Tensor): Input Vector
-        :return: x (torch.Tensor): Ouput Vecotr after running throught layers of this module
-        """
-
-        residual = x
-
-        x = self.w_2(F.relu(self.w_1(x)))
-        x = self.dropout(x)
-        x += residual
-
-        x = self.layer_norm(x)
-
-        return x
-
-    
 class ScaledDotProductAttention(nn.Module):
     """Scaled Dot Product Attention
     

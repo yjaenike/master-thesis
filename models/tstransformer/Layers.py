@@ -29,7 +29,6 @@ class EncoderLayer(nn.Module):
         dropout (float): dropout rate
         """
         super(EncoderLayer, self).__init__()
-        #self.slf_attn = MultiHeadAttention(n_head, d_model, d_k, d_v, dropout=dropout)
         
         self.slf_attn = nn.MultiheadAttention(embed_dim=d_model, num_heads=n_head, kdim=d_k, vdim=d_v, batch_first=True)
         self.pos_ffn = PositionwiseFeedForward(d_model, d_inner, dropout=dropout)
@@ -44,8 +43,8 @@ class EncoderLayer(nn.Module):
         :return: enc_slf_attn():The Attention map from the MultiheadAttentionModule
         """
         
-        #enc_output, enc_slf_attn = self.slf_attn(enc_input, enc_input, enc_input, mask=slf_attn_mask)
         
+        #TODO: Implement attn_mask in the input
         enc_output, enc_slf_attn = self.slf_attn(enc_input,enc_input,enc_input)#, attn_mask=slf_attn_mask)
         enc_output = self.pos_ffn(enc_output)
         return enc_output, enc_slf_attn
@@ -76,8 +75,6 @@ class DecoderLayer(nn.Module):
         dropout (float): dropout rate
         """
         super(DecoderLayer, self).__init__()
-        #self.slf_attn = MultiHeadAttention(n_head, d_model, d_k, d_v, dropout=dropout)
-        #self.enc_attn = MultiHeadAttention(n_head, d_model, d_k, d_v, dropout=dropout)
         
         self.slf_attn = nn.MultiheadAttention(embed_dim=d_model, num_heads=n_head, dropout=dropout, kdim=d_k, vdim=d_v, batch_first=True)
         self.enc_attn = nn.MultiheadAttention(embed_dim=d_model, num_heads=n_head, dropout=dropout, kdim=d_k, vdim=d_v, batch_first=True)
@@ -97,10 +94,7 @@ class DecoderLayer(nn.Module):
         :return: dec_enc_attn(): The Attention map from the encoder-decoder MultiheadAttentionModule 
         """
         
-        #dec_output, dec_slf_attn = self.slf_attn(dec_input, dec_input, dec_input, mask=slf_attn_mask)
-        #dec_output, dec_enc_attn = self.enc_attn(dec_output, enc_output, enc_output, mask=dec_enc_attn_mask)
-        
-        
+        #TODO: Implement attn_mask in the input
         dec_output, dec_slf_attn = self.slf_attn(dec_input, dec_input, dec_input,)# attn_mask=slf_attn_mask)
         dec_output, dec_enc_attn = self.enc_attn(dec_output, enc_output, enc_output, )#attn_mask=dec_enc_attn_mask)
         
