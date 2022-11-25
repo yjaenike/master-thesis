@@ -39,8 +39,11 @@ def update_options(options, file_name="update_options.yaml"):
     return options
 
 def print_options(opt):
-    for key, value in opt.items(): 
-        print("\033[93m\033[1m","{:>20}".format(key),"\033[0m: ",value)
+    for key, value in opt.items():
+        if key[0]=="-":
+            print("\n\033[95m\033[1m","{:}".format(key),"\033[0m: ",value)
+        else:
+            print("\033[93m\033[1m","{:}".format(key),"\033[0m: ",value)
 
 #TODO: Maybe turn the options into a Calls so they can be accessed with the options.X notation.
     

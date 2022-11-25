@@ -1,4 +1,4 @@
-from datautils.ts_dataset import TSDataset
+from data_utils.ts_dataset import TSDataset
 from torch.utils.data import DataLoader
 
 def prepare_dataloaders(data, batch_size=1, window_size=1,target_cols=None, pin_memory=True):
