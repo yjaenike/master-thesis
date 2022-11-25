@@ -98,9 +98,17 @@ class Encoder(nn.Module):
         self.position_enc = PositionalEncoding(d_sequence_vec, n_position=n_position)
         self.dropout = nn.Dropout(p=dropout)
         
+        #self.layer_stack = nn.ModuleList([
+        #    EncoderLayer(d_model, d_inner, n_head, d_k, d_v, dropout=dropout)
+        #    for _ in range(n_layers)])
+        
+        #TODO: Implement torch encoder layer stack
         self.layer_stack = nn.ModuleList([
-            EncoderLayer(d_model, d_inner, n_head, d_k, d_v, dropout=dropout)
-            for _ in range(n_layers)])
+            nn.TransformerEncoderLayer(d_model=512, nhead=8, dim_feedforward=d_inner, dropout=dropout, batch_first=True)
+            for _ in range(n_layers)
+        ])
+        
+        
         
         self.layer_norm = nn.LayerNorm(d_model, eps=1e-6)
         self.scale_emb = scale_emb
@@ -131,9 +139,14 @@ class Encoder(nn.Module):
         enc_output = self.layer_norm(enc_output)
         
         # Run through encoder layers
+        #for enc_layer in self.layer_stack:
+        #    enc_output, enc_slf_attn = enc_layer(enc_output, slf_attn_mask=src_mask)
+        #    enc_slf_attn_list += [enc_slf_attn] if return_attns else []
+        
+        #TODO: Implement torch encoder layer stack
+        # Run through the encoder layer stack
         for enc_layer in self.layer_stack:
-            enc_output, enc_slf_attn = enc_layer(enc_output, slf_attn_mask=src_mask)
-            enc_slf_attn_list += [enc_slf_attn] if return_attns else []
+            enc_output = enc_layer(enc_output, )# slf_attn_mask=src_mask)
         
         
         if return_attns:
@@ -180,7 +193,7 @@ class Decoder(nn.Module):
         self.position_enc = PositionalEncoding(d_sequence_vec, n_position=n_position)
         self.dropout = nn.Dropout(p=dropout)
         
-        #TODO: change custom decoder layer to torch implementation
+
         self.layer_stack = nn.ModuleList([
             nn.TransformerDecoderLayer(d_model=512, nhead=8, dim_feedforward=d_inner, batch_first=True)
             for _ in range(n_layers)
@@ -218,9 +231,8 @@ class Decoder(nn.Module):
         dec_output = self.layer_norm(dec_output)
 
         
-        #TODO: implement nn.DecoderLayer forward pass
+        # Run through the decoder layer stack
         for dec_layer in self.layer_stack:
-            
             dec_output = dec_layer(dec_output, enc_output,)# trg_mask, src_mask)
 
             
