@@ -12,8 +12,9 @@ d_sequence: 512  #dimensionality of the sequence vector after the 'Embedding' (f
 
 n_head : 8 # Number of attention heads
 n_layers : 6 # the number of layers in the encoder / decoder -> 6 is the standard
-n_warmup_steps : 4000
+n_warmup_steps : 4000 #TODO: What is this?
 lr_mul : 2.0 # The learning rate of the network
+loss_func: "rmse"
 seed : No
 
 dropout : 0.1
