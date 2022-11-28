@@ -1,0 +1,208 @@
+{
+    "os": "Linux-5.4.0-131-generic-x86_64-with-glibc2.31",
+    "python": "3.10.4",
+    "heartbeatAt": "2022-11-28T14:43:18.450237",
+    "startedAt": "2022-11-28T14:43:17.778091",
+    "docker": null,
+    "cuda": null,
+    "args": null,
+    "state": "running",
+    "program": "<python with no main file>",
+    "git": {
+        "remote": "git@github.com:yjaenike/master-thesis.git",
+        "commit": "8b2232d017715646482110bcde0200ef05d09fc6"
+    },
+    "email": "yannicjae@gmail.com",
+    "root": "/home/yannic/master-thesis",
+    "host": "ubuntu",
+    "username": "yannic",
+    "executable": "/home/yannic/anaconda3/envs/jupyter-lab/bin/python",
+    "cpu_count": 16,
+    "cpu_count_logical": 32,
+    "cpu_freq": {
+        "current": 4.00603125,
+        "min": 1200.0,
+        "max": 4400.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3.927,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.6,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.599,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.169,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.599,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.299,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.3,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.599,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.3,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.6,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.286,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.299,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.6,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.3,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.3,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.299,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.599,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.599,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.975,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.172,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.599,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.3,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.299,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.599,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.3,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.6,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.279,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.299,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.6,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.299,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.299,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 4.299,
+            "min": 1200.0,
+            "max": 4400.0
+        }
+    ],
+    "disk": {
+        "total": 1708.0285377502441,
+        "used": 50.24143600463867
+    },
+    "gpu": "NVIDIA TITAN V",
+    "gpu_count": 2,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA TITAN V",
+            "memory_total": 12884901888
+        },
+        {
+            "name": "NVIDIA TITAN V",
+            "memory_total": 12884901888
+        }
+    ],
+    "memory": {
+        "total": 376.5807762145996
+    }
+}

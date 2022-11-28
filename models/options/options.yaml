@@ -3,7 +3,6 @@
 
 
 #--- Data Parameters ------------------------------------------------------------------#
-----Data-Parameters-------------------------------------------------------------------- : ""
 train_path : "/home/yannic/master-thesis/data_air/prsa_data.parquet"
 val_path : "/home/yannic/master-thesis/data_air/prsa_data.parquet"
 
@@ -14,7 +13,6 @@ trg_pad_idx : 0
 
 
 #--- Training parameters --------------------------------------------------------------#
-----Training-Parameters---------------------------------------------------------------- : ""
 epoch : 10
 batch_size : 64
 window_size: 30
@@ -22,7 +20,6 @@ loss_func: "rmse" #Options: r2, mse, rmse
 
 
 #--- Model Parameters -----------------------------------------------------------------#
-----Model-Parameters------------------------------------------------------------------- : ""
 d_model : 512 # The Model dimensionality
 d_inner_hidden : 2048 # Dimensionality of the hidden layer in the Positionwise Feed Forward Module
 d_key : 512 # dimensionality of the key vector
@@ -32,7 +29,7 @@ d_sequence: 512  #dimensionality of the sequence vector after the 'Embedding' (f
 n_head : 8 # Number of attention heads
 n_layers : 6 # the number of layers in the encoder / decoder -> 6 is the standard
 n_warmup_steps : 4000 #TODO: What is this?
-lr_mul : 2.0 # The learning rate of the network
+lr_mul : 2.0 # The learning rate multioplicator for the scheduled learning rate
 seed : No
 
 dropout : 0.1
@@ -42,13 +39,11 @@ scale_emb_or_prj : 'prj'
 
 
 #--- Logging Parameters ----------------------------------------------------------------#
-----Logging-Parameters------------------------------------------------------------------ : ""
 output_dir : "./output"
-use_wandb: False
+use_wandb: True
 save_mode : 'best'
 
 
 #--- Others ---------------------------------------------------------------------------#
-----Other-Parameters------------------------------------------------------------------- : ""
 cuda : True
 label_smoothing : True

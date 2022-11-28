@@ -1,0 +1,121 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.13.5
+    framework: torch
+    is_jupyter_run: true
+    is_kaggle_kernel: false
+    python_version: 3.10.4
+    start_time: 1669646815.032466
+    t:
+      1:
+      - 1
+      - 5
+      - 50
+      - 53
+      - 55
+      2:
+      - 1
+      - 5
+      - 50
+      - 53
+      - 55
+      3:
+      - 1
+      - 2
+      - 16
+      - 23
+      4: 3.10.4
+      5: 0.13.5
+      8:
+      - 1
+      - 5
+batch_size:
+  desc: null
+  value: 64
+cuda:
+  desc: null
+  value: true
+d_inner_hidden:
+  desc: null
+  value: 2048
+d_key:
+  desc: null
+  value: 512
+d_model:
+  desc: null
+  value: 512
+d_sequence:
+  desc: null
+  value: 512
+d_value:
+  desc: null
+  value: 512
+dropout:
+  desc: null
+  value: 0.1
+embs_share_weight:
+  desc: null
+  value: false
+epoch:
+  desc: null
+  value: 10
+label_smoothing:
+  desc: null
+  value: true
+loss_func:
+  desc: null
+  value: rmse
+lr_mul:
+  desc: null
+  value: 2.0
+n_head:
+  desc: null
+  value: 8
+n_layers:
+  desc: null
+  value: 6
+n_warmup_steps:
+  desc: null
+  value: 4000
+output_dir:
+  desc: null
+  value: ./output
+proj_share_weight:
+  desc: null
+  value: false
+save_mode:
+  desc: null
+  value: best
+scale_emb_or_prj:
+  desc: null
+  value: prj
+seed:
+  desc: null
+  value: false
+src_pad_idx:
+  desc: null
+  value: 0
+src_sequence_size:
+  desc: null
+  value: 11
+train_path:
+  desc: null
+  value: /home/yannic/master-thesis/data_air/prsa_data.parquet
+trg_pad_idx:
+  desc: null
+  value: 0
+trg_sequence_size:
+  desc: null
+  value: 11
+use_wandb:
+  desc: null
+  value: true
+val_path:
+  desc: null
+  value: /home/yannic/master-thesis/data_air/prsa_data.parquet
+window_size:
+  desc: null
+  value: 30

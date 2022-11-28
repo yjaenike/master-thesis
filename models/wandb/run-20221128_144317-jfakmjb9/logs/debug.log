@@ -1,0 +1,47 @@
+2022-11-28 14:43:17,782 INFO    MainThread:2117480 [wandb_setup.py:_flush():68] Configure stats pid to 2117480
+2022-11-28 14:43:17,782 INFO    MainThread:2117480 [wandb_setup.py:_flush():68] Loading settings from /home/yannic/.config/wandb/settings
+2022-11-28 14:43:17,782 INFO    MainThread:2117480 [wandb_setup.py:_flush():68] Loading settings from /home/yannic/master-thesis/models/wandb/settings
+2022-11-28 14:43:17,782 INFO    MainThread:2117480 [wandb_setup.py:_flush():68] Loading settings from environment variables: {'_require_service': 'True'}
+2022-11-28 14:43:17,782 INFO    MainThread:2117480 [wandb_setup.py:_flush():68] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2022-11-28 14:43:17,782 INFO    MainThread:2117480 [wandb_init.py:_log_setup():476] Logging user logs to /home/yannic/master-thesis/models/wandb/run-20221128_144317-jfakmjb9/logs/debug.log
+2022-11-28 14:43:17,782 INFO    MainThread:2117480 [wandb_init.py:_log_setup():477] Logging internal logs to /home/yannic/master-thesis/models/wandb/run-20221128_144317-jfakmjb9/logs/debug-internal.log
+2022-11-28 14:43:17,783 INFO    MainThread:2117480 [wandb_init.py:_jupyter_setup():426] configuring jupyter hooks <wandb.sdk.wandb_init._WandbInit object at 0x7fafc468f520>
+2022-11-28 14:43:17,783 INFO    MainThread:2117480 [wandb_init.py:init():516] calling init triggers
+2022-11-28 14:43:17,783 INFO    MainThread:2117480 [wandb_init.py:init():519] wandb.init called with sweep_config: {}
+config: {}
+2022-11-28 14:43:17,783 INFO    MainThread:2117480 [wandb_init.py:init():569] starting backend
+2022-11-28 14:43:17,783 INFO    MainThread:2117480 [wandb_init.py:init():573] setting up manager
+2022-11-28 14:43:17,787 INFO    MainThread:2117480 [backend.py:_multiprocessing_setup():102] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2022-11-28 14:43:17,788 INFO    MainThread:2117480 [wandb_init.py:init():580] backend started and connected
+2022-11-28 14:43:17,801 INFO    MainThread:2117480 [wandb_run.py:_label_probe_notebook():1113] probe notebook
+2022-11-28 14:43:17,801 INFO    MainThread:2117480 [wandb_run.py:_label_probe_notebook():1123] Unable to probe notebook: 'NoneType' object has no attribute 'get'
+2022-11-28 14:43:17,801 INFO    MainThread:2117480 [wandb_init.py:init():658] updated telemetry
+2022-11-28 14:43:17,806 INFO    MainThread:2117480 [wandb_init.py:init():693] communicating run to backend with 60 second timeout
+2022-11-28 14:43:18,244 INFO    MainThread:2117480 [wandb_run.py:_on_init():2000] communicating current version
+2022-11-28 14:43:18,398 INFO    MainThread:2117480 [wandb_run.py:_on_init():2004] got version response 
+2022-11-28 14:43:18,398 INFO    MainThread:2117480 [wandb_init.py:init():728] starting run threads in backend
+2022-11-28 14:43:23,413 INFO    MainThread:2117480 [wandb_run.py:_console_start():1980] atexit reg
+2022-11-28 14:43:23,413 INFO    MainThread:2117480 [wandb_run.py:_redirect():1838] redirect: SettingsConsole.WRAP_RAW
+2022-11-28 14:43:23,413 INFO    MainThread:2117480 [wandb_run.py:_redirect():1903] Wrapping output streams.
+2022-11-28 14:43:23,413 INFO    MainThread:2117480 [wandb_run.py:_redirect():1925] Redirects installed.
+2022-11-28 14:43:23,414 INFO    MainThread:2117480 [wandb_init.py:init():765] run started, returning control to user process
+2022-11-28 14:43:30,106 INFO    MainThread:2117480 [wandb_watch.py:watch():51] Watching
+2022-11-28 14:43:36,500 INFO    MainThread:2117480 [wandb_watch.py:watch():51] Watching
+2022-11-28 14:43:42,897 INFO    MainThread:2117480 [wandb_watch.py:watch():51] Watching
+2022-11-28 14:43:49,447 INFO    MainThread:2117480 [wandb_watch.py:watch():51] Watching
+2022-11-28 14:43:55,959 INFO    MainThread:2117480 [wandb_watch.py:watch():51] Watching
+2022-11-28 14:44:02,790 INFO    MainThread:2117480 [wandb_watch.py:watch():51] Watching
+2022-11-28 14:44:09,375 INFO    MainThread:2117480 [wandb_watch.py:watch():51] Watching
+2022-11-28 14:44:16,000 INFO    MainThread:2117480 [wandb_watch.py:watch():51] Watching
+2022-11-28 14:44:22,681 INFO    MainThread:2117480 [wandb_watch.py:watch():51] Watching
+2022-11-28 14:44:29,252 INFO    MainThread:2117480 [wandb_watch.py:watch():51] Watching
+2022-11-28 14:44:29,255 INFO    MainThread:2117480 [wandb_run.py:_finish():1746] finishing run yannicj/masters-thesis/jfakmjb9
+2022-11-28 14:44:29,256 INFO    MainThread:2117480 [jupyter.py:save_history():448] not saving jupyter history
+2022-11-28 14:44:29,256 INFO    MainThread:2117480 [jupyter.py:save_ipynb():378] not saving jupyter notebook
+2022-11-28 14:44:29,256 INFO    MainThread:2117480 [wandb_init.py:_jupyter_teardown():408] cleaning up jupyter logic
+2022-11-28 14:44:29,256 INFO    MainThread:2117480 [wandb_run.py:_atexit_cleanup():1949] got exitcode: 0
+2022-11-28 14:44:29,256 INFO    MainThread:2117480 [wandb_run.py:_restore():1932] restore
+2022-11-28 14:44:29,256 INFO    MainThread:2117480 [wandb_run.py:_restore():1938] restore done
+2022-11-28 14:44:34,039 INFO    MainThread:2117480 [wandb_run.py:_footer_history_summary_info():3377] rendering history
+2022-11-28 14:44:34,040 INFO    MainThread:2117480 [wandb_run.py:_footer_history_summary_info():3409] rendering summary
+2022-11-28 14:44:34,044 INFO    MainThread:2117480 [wandb_run.py:_footer_sync_info():3333] logging synced files

@@ -1,0 +1,23 @@
+{
+    "os": "Linux-5.4.0-131-generic-x86_64-with-glibc2.31",
+    "python": "3.10.4",
+    "heartbeatAt": "2022-11-28T14:25:26.821357",
+    "startedAt": "2022-11-28T14:25:20.115910",
+    "docker": null,
+    "gpu": "NVIDIA TITAN V",
+    "gpu_count": 2,
+    "cpu_count": 32,
+    "cuda": null,
+    "args": null,
+    "state": "running",
+    "program": "<python with no main file>",
+    "git": {
+        "remote": "git@github.com:yjaenike/master-thesis.git",
+        "commit": "8b2232d017715646482110bcde0200ef05d09fc6"
+    },
+    "email": "yannicjae@gmail.com",
+    "root": "/home/yannic/master-thesis",
+    "host": "ubuntu",
+    "username": "yannic",
+    "executable": "/home/yannic/anaconda3/envs/jupyter-lab/bin/python"
+}
