@@ -17,7 +17,8 @@ trg_pad_idx : 0
 ----Training-Parameters---------------------------------------------------------------- : ""
 epoch : 10
 batch_size : 64
-loss_func: "rmse"
+window_size: 30
+loss_func: "rmse" #Options: r2, mse, rmse
 
 
 #--- Model Parameters -----------------------------------------------------------------#

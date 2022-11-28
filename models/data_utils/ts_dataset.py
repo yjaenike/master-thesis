@@ -2,7 +2,7 @@ import torch
 from torch.utils.data import Dataset
 
 class TSDataset(Dataset):
-    def __init__(self, data, window, target_cols=None):
+    def __init__(self, data, window, device="cpu", target_cols=None):
         '''
         :param data: dataset of type numpy.ndarray
         :param window: the windpow size of the time series sequence
@@ -17,12 +17,13 @@ class TSDataset(Dataset):
         self.size = self.__getsize__()
         
     def __getitem__(self, index):
-        x = self.data[index:index+self.window]
+        # Get the ith element to the ith+wth element [i,...,i+w], the i+wth element is not part of the list here 
+        x = self.data[index : index+self.window]
         
         # If the target cols are not specified, use all columns as targets
         if self.target_cols is None:
             self.target_cols = self.data.shape[1]
-        #y = self.data[index+self.window, -self.target_cols:]
+
         y = torch.unsqueeze(self.data[index+self.window, -self.target_cols:], dim=0)
         return x, y
     

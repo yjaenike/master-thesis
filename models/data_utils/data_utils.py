@@ -1,7 +1,7 @@
 from data_utils.ts_dataset import TSDataset
 from torch.utils.data import DataLoader
 
-def prepare_dataloaders(data, batch_size=1, window_size=1,target_cols=None, pin_memory=True):
+def prepare_dataloaders(data, batch_size=1, window_size=1,target_cols=None, pin_memory=True, device="cpu"):
     '''
     
     Prepares a torch dataset and an iterable over the datset (dataloader) of a given numpy.ndarray dataset.
@@ -15,9 +15,9 @@ def prepare_dataloaders(data, batch_size=1, window_size=1,target_cols=None, pin_
     
     '''
     # create a Time Series Dataset object
-    dataset = TSDataset(data, window_size, target_cols)
+    dataset = TSDataset(data, window_size, device, target_cols)
     
     # create a DataLoader object from the dataset
-    dataloader = DataLoader(dataset, batch_size=batch_size, pin_memory=pin_memory)
+    dataloader = DataLoader(dataset, batch_size=batch_size, pin_memory=pin_memory, num_workers=4,)
     
     return dataset, dataloader
