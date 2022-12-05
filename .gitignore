@@ -8,3 +8,4 @@ uke_data_wide.parquet
 data_traffic
 # Ignore ipynb checkpoints in the git
 .ipynb_checkpoints/
+models/wandb/*
