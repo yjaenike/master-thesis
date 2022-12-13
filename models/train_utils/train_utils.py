@@ -11,10 +11,9 @@ def calc_loss(pred, target, lossfn="rmse"):
     # flatten targets in order to match predicitions
     target = target.flatten(start_dim=1)
     
-    #TODO: Check if NAN's in target, and mask them out in th eloss calculation
+    #TODO: Check if NAN's in target, and mask them out in the loss calculation
     
     # calc loss
-    
     if lossfn=="rmse":
         loss = rmse_loss(pred, target)
         
@@ -23,9 +22,7 @@ def calc_loss(pred, target, lossfn="rmse"):
         
     #elif lossfn=="r2":
     #    loss = r_squared(pred, target)
-    
-    
-    
+
     return loss
 
 def mse_loss(pred, target):
@@ -48,6 +45,27 @@ def r_squared(pred, target):
     loss = 1 - ss_res / ss_tot
     
     return loss
+
+def validate_epoch(model, validation_dataloader, device, opt):
+    model.eval()
+    running_val_loss = 0
+    val_losses = []
+    with torch.no_grad():
+        for data, target in validation_dataloader:
+                
+            data = data.to(device)
+            target = target.to(device)
+            decoder_input = data[:,-1,:].unsqueeze(dim=1)
+            
+            pred = model(data, decoder_input)
+            
+            loss = calc_loss(pred, target, opt["loss_func"])
+            running_val_loss += loss.item()
+            val_losses.append(loss.item())
+            
+    
+    return running_val_loss, val_losses
+    
 
 def train_epoch(model, train_dataloader, optimizer, opt, device):
     
@@ -93,38 +111,3 @@ def print_training_settings(device, train_split, eval_split, test_split, lossfn)
     print("- \033[1mtest_size:\033[0m {}% {}".format(round(test_split.shape[0]/total_samples,2), test_split.shape))
     print("- \033[1mloss_fn:\033[0m", lossfn)
     print("\033[95m\033[1m#-------------------------------------#\033[0m")
-
-    
-def train_old(model, train_dataloader, validation_data, optimizer, device, opt):
-    
-    # TODO: Implement wandb connection
-    
-    # TODO: Implement logging
-    epoch_losses = []
-    
-    def print_performance(header, loss_name, loss, start_time, lr):
-        print("  - ({header:12}) | {loss_name}: {loss:3.3f} | lr: {lr:8.5f} | elapse: {elapse:3.3f} min".format(header=header,loss_name=loss_name, loss=loss, elapse=(time.time()-start_time)/60, lr=lr))
-    
-    #TODO: half precission
-    
-    # TODO: Training Epoch Loop
-    for epoch_i in range(opt["epoch"]):
-        print("[Epoch: {:>3}]".format(epoch_i))
-        
-        # trains one epoch
-        start = time.time()
-        losses = train_epoch(model,train_dataloader,optimizer,opt,device)
-        
-        #calculate epoch loss and add to logging
-        total_epoch_loss = sum([loss.item() for loss in losses])
-        epoch_losses.append(total_epoch_loss)
-        
-        lr = optimizer._optimizer.param_groups[0]['lr']
-        
-        print_performance('Training',opt["loss_func"], total_epoch_loss, start, lr)
-        
-        
-        #TODO: write function: eval_epoch() 
-        #eval_epoch()
-    
-    

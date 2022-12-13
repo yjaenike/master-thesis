@@ -11,12 +11,15 @@ trg_sequence_size : 11
 src_pad_idx : 0
 trg_pad_idx : 0
 
+nsamples : 0.01
+
 
 #--- Training parameters --------------------------------------------------------------#
-epoch : 20
+epoch : 10
 batch_size : 64
-window_size: 128
+window_size: 256
 loss_func: "rmse" #Options: r2, mse, rmse
+learning_rate: 0.001
 
 
 #--- Model Parameters -----------------------------------------------------------------#
@@ -28,7 +31,6 @@ d_sequence: 512  #dimensionality of the sequence vector after the 'Embedding' (f
 
 n_head : 8 # Number of attention heads
 n_layers : 6 # the number of layers in the encoder / decoder -> 6 is the standard
-n_warmup_steps : 4000 #TODO: What is this?
 lr_mul : 2.0 # The learning rate multioplicator for the scheduled learning rate
 seed : No
 
