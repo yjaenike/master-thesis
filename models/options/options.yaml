@@ -11,16 +11,17 @@ trg_sequence_size : 11
 src_pad_idx : 0
 trg_pad_idx : 0
 
-nsamples : 0.01
+nsamples : 0.5
 
 
 #--- Training parameters --------------------------------------------------------------#
 epoch : 10
 batch_size : 64
-window_size: 256
-loss_func: "rmse" #Options: r2, mse, rmse
-learning_rate: 0.001
-
+window_size : 256
+loss_func : "mse" #Options: r2, mse, rmse
+learning_rate : 0.001
+gamma : 1.0 # for the lr scheduler if gamma is set to 0, the lr schedular is not chaning the lr
+step_size : 1 # for the lr scheduler
 
 #--- Model Parameters -----------------------------------------------------------------#
 d_model : 512 # The Model dimensionality
@@ -31,7 +32,6 @@ d_sequence: 512  #dimensionality of the sequence vector after the 'Embedding' (f
 
 n_head : 8 # Number of attention heads
 n_layers : 6 # the number of layers in the encoder / decoder -> 6 is the standard
-lr_mul : 2.0 # The learning rate multioplicator for the scheduled learning rate
 seed : No
 
 dropout : 0.1
@@ -43,9 +43,10 @@ scale_emb_or_prj : 'prj'
 #--- Logging Parameters ----------------------------------------------------------------#
 output_dir : "./output"
 use_wandb: True
+name: None
 save_mode : 'best'
 
 
 #--- Others ---------------------------------------------------------------------------#
 cuda : True
-label_smoothing : True
+label_smoothing : True #TODO: Is this even used?

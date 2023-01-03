@@ -5,6 +5,7 @@ from tqdm import tqdm
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import wandb
 
 def calc_loss(pred, target, lossfn="rmse"):
     
@@ -98,16 +99,91 @@ def train_epoch(model, train_dataloader, optimizer, opt, device):
         losses.append(loss)
          
     return losses
+
+def train(model, train_dataloader, validation_datalaoder, optimizer, scheduler, device, opt, name=None):
     
-def print_training_settings(device, train_split, eval_split, test_split, lossfn):
+    if opt["use_wandb"]:
+        wandb.init(project="masters-thesis", entity="yannicj", config=opt)
+        if name:
+            wandb.run.name = name
+
+    for epoch in range(opt["epoch"]):
+        
+        # Initiate running losses for epoch
+        running_train_loss = 0
+        train_losses = []
+        running_val_loss = 0
+        val_losses = []
+        
+        
+        with tqdm(train_dataloader, unit="batch", mininterval=1, leave=True) as tepoch:
+            tepoch.set_description(f"Epoch {epoch}")
+            
+            # Train epoch
+            for data, target in train_dataloader:
+                tepoch.update(1)
+                
+                # Prepare data
+                data = data.to(device)
+                target = target.to(device)
+                decoder_input = data[:,-1,:].unsqueeze(dim=1)
+                
+                # Trainig step
+                optimizer.zero_grad()
+                pred = model(data, decoder_input)
+
+                loss = calc_loss(pred, target, opt["loss_func"])
+                running_train_loss += loss.item()
+                train_losses.append(loss.item())
+
+                loss.backward()
+                optimizer.step()
+                
+                # Update progress bar
+                temp_mean_train_loss = sum(train_losses) / len(train_losses)
+                tqdm_loss = "{:10.4f}".format(temp_mean_train_loss)
+                tepoch.set_postfix(mean_train_loss=tqdm_loss)
+            
+            # scheduler step
+            scheduler.step()
+            
+            # Validate epoch
+            running_val_loss, val_losses = validate_epoch(model, validation_datalaoder, device, opt)
+            
+            # Update Progress Bar
+            mean_tain_loss = sum(train_losses) / len(train_losses)
+            mean_val_loss = sum(val_losses) / len(val_losses)
+            tqdm_train_loss = "{:10.4f}".format(mean_tain_loss)
+            tqdm_val_losses = "{:10.4f}".format(mean_val_loss)
+            
+            tepoch.set_postfix({"loss": tqdm_train_loss, "val_loss": tqdm_val_losses})
+            tepoch.close()
+            
+            #print(scheduler._last_lr[-1])
+            
+            if opt["use_wandb"]:
+                wandb.log({"train_loss": mean_tain_loss, "val_loss": mean_val_loss, "lr":scheduler._last_lr[-1]})
+                wandb.watch(model)
+                
+            # save model localy
+            
+    
+    if opt["use_wandb"]:
+        wandb.finish()
+
+def print_training_settings(device, train_split, eval_split, test_split, opt):
     
     # total samples
     total_samples = train_split.shape[0] + eval_split.shape[0] + test_split.shape[0]
     print("\033[95m\033[1m#-------------------------------------#\033[0m")
-    print("\033[4m\033[1mTraining Settings:\033[0m")
+    print("\033[4m\033[1mTraining Settings ({}):\033[0m".format(opt["name"]))
     print("- \033[1mdevice:\033[0m",device)
     print("- \033[1mtrain_size:\033[0m {}% {}".format(round(train_split.shape[0]/total_samples,2), train_split.shape))
     print("- \033[1meval_size:\033[0m {}% {}".format(round(eval_split.shape[0]/total_samples,2), eval_split.shape))
     print("- \033[1mtest_size:\033[0m {}% {}".format(round(test_split.shape[0]/total_samples,2), test_split.shape))
-    print("- \033[1mloss_fn:\033[0m", lossfn)
+    print("- \033[1mloss_fn:\033[0m", opt["loss_func"])
+    print("- \033[1mepoch:\033[0m", opt["epoch"])
+    print("- \033[1mbatch_size:\033[0m", opt["batch_size"])
+    print("- \033[1mwindow_size:\033[0m", opt["window_size"])
+    print("- \033[1mlearning_rate:\033[0m", opt["learning_rate"])
     print("\033[95m\033[1m#-------------------------------------#\033[0m")
